@@ -1,0 +1,20 @@
+# Python/Django
+venv/
+__pycache__/
+*.pyc
+db.sqlite3
+
+# ML / YOLOv8
+runs/
+shoplifting_model/
+*.pt
+!ml_service/best.pt
+temp_frames/
+debug_output/
+*.jpg
+*.mp4
+
+# IDEs
+.vscode/
+.idea/
+.env
