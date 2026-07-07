@@ -1,4 +1,4 @@
 window.CONFIG = {
-    API_URL: https://shoplifting-bacomckend.onrender.
-    WS_URL: wss://shoplifting-backend.onrender.com
+    API_URL: "https://shoplifting-backend.onrender.com",
+    WS_URL: "wss://shoplifting-backend.onrender.com"
 };
