@@ -1,6 +1,7 @@
 from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 import shutil
 import os
 
@@ -24,6 +25,8 @@ detector = ShopliftingDetector(MODEL_PATH)
 
 UPLOAD_DIR = "temp_frames"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
+os.makedirs("debug_output", exist_ok=True)
+app.mount("/images", StaticFiles(directory="debug_output"), name="images")
 
 @app.post("/analyze")
 async def analyze_frame(file: UploadFile = File(...)):
@@ -44,12 +47,14 @@ async def analyze_frame(file: UploadFile = File(...)):
         # If no detections, confidence is 0.0
         max_conf = max([d["confidence"] for d in result["detections"]]) if result["detections"] else 0.0
         
+        annotated_filename = os.path.basename(result["annotated_image_path"])
+        
         # Format response to match the requested execution plan
         return JSONResponse(content={
             "theft_detected": result["suspicious"],
             "confidence": max_conf,
             "bounding_box": result["detections"],  # Sending all detections
-            "annotated_image_path": result["annotated_image_path"]
+            "annotated_image_path": f"/images/{annotated_filename}"
         })
     except Exception as e:
         return JSONResponse(status_code=500, content={"error": str(e)})

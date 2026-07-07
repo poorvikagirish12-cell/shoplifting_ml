@@ -39,11 +39,17 @@ class ProcessFrameView(APIView):
                 if data.get("theft_detected", False):
                     annotated_path = data.get("annotated_image_path", "")
                     
+                    # Prepend the FASTAPI_URL to the image path if it's a relative path
+                    if annotated_path.startswith("/images/"):
+                        full_image_url = f"{base_fastapi_url}{annotated_path}"
+                    else:
+                        full_image_url = annotated_path
+                    
                     # Create and save a new incident record in SQLite/PostgreSQL
                     incident = IncidentReport.objects.create(
                         camera_id=request.data.get("camera_id", "CAM-01"),
                         confidence_score=data.get("confidence", 0.0),
-                        image_url=annotated_path,
+                        image_url=full_image_url,
                         theft_detected=True
                     )
                     
