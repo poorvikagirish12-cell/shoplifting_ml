@@ -18,5 +18,5 @@ COPY . .
 # Expose port
 EXPOSE 8888
 
-# Command to run the application
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8888"]
+# Command to run the application using Render's assigned port
+CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT:-8888}"]

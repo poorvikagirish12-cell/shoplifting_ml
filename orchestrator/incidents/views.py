@@ -80,7 +80,7 @@ class ProcessFrameView(APIView):
                 # If no theft was detected, just return OK without saving to DB
                 return Response({"status": "clean", "data": data}, status=status.HTTP_200_OK)
             else:
-                return Response({"error": "FastAPI engine returned an error"}, status=status.HTTP_502_BAD_GATEWAY)
+                return Response({"error": f"FastAPI engine returned an error: {response.status_code} - {response.text}"}, status=status.HTTP_502_BAD_GATEWAY)
                 
         except requests.exceptions.ConnectionError:
             return Response({"error": "FastAPI ML Engine is offline"}, status=status.HTTP_503_SERVICE_UNAVAILABLE)

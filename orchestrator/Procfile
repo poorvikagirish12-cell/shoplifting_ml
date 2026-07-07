@@ -1,1 +1,1 @@
-web: gunicorn orchestrator.wsgi
+web: daphne orchestrator.asgi:application --port $PORT --bind 0.0.0.0
