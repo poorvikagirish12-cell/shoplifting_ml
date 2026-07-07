@@ -47,8 +47,8 @@ class ShopliftingDetector:
         if not os.path.exists(image_path):
             raise FileNotFoundError(f"Input image not found: {image_path}")
 
-        # Run inference
-        results = self.model(image_path)[0]
+        # Run inference with reduced image size to prevent OOM crashes on free tier VMs
+        results = self.model(image_path, imgsz=320)[0]
         
         # Load image for drawing
         image = cv2.imread(image_path)
