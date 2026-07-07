@@ -112,32 +112,14 @@ class ShopliftingDetector:
 
         # Apply COCO heuristic if using fallback model
         if not self.is_custom_model and persons:
-            # Check if any item overlaps with a person AND a bag is nearby or overlapping
-            for px1, py1, px2, py2 in persons:
-                for ix1, iy1, ix2, iy2, item_name in items:
-                    # Check overlap (intersection) between person and target item
-                    if (px1 < ix2 and px2 > ix1 and py1 < iy2 and py2 > iy1):
-                        # A person is interacting with an item.
-                        # Now check if there's a bag nearby (within some distance)
-                        person_center_x = (px1 + px2) / 2
-                        person_center_y = (py1 + py2) / 2
-                        
-                        for bx1, by1, bx2, by2, bag_name in bags:
-                            bag_center_x = (bx1 + bx2) / 2
-                            bag_center_y = (by1 + by2) / 2
-                            
-                            # Simple distance heuristic (distance between center of person and center of bag)
-                            dist = ((person_center_x - bag_center_x)**2 + (person_center_y - bag_center_y)**2)**0.5
-                            max_dist = max(px2 - px1, py2 - py1) * 0.8  # Relative to person size
-                            
-                            # Also check if item overlaps with the bag
-                            item_bag_overlap = (ix1 < bx2 and ix2 > bx1 and iy1 < by2 and iy2 > by1)
-
-                            if dist < max_dist or item_bag_overlap:
-                                suspicious = True
-                                # Highlight the suspicious interaction
-                                cv2.putText(image, "WARNING: Suspicious Interaction", (10, 30),
-                                            cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 0, 255), 3)
+            # Hackathon demo heuristic:
+            # If a person is detected, AND a target item is detected, AND a bag is detected
+            # we consider it "suspicious" for demonstration purposes without requiring strict bounding box overlaps.
+            if items and bags:
+                suspicious = True
+                # Highlight the suspicious interaction
+                cv2.putText(image, "WARNING: Suspicious Interaction", (10, 30),
+                            cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 0, 255), 3)
 
         # Create output directory
         if not os.path.exists(output_dir):
