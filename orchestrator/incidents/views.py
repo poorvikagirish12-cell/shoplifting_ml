@@ -84,3 +84,11 @@ class ProcessFrameView(APIView):
                 
         except requests.exceptions.ConnectionError:
             return Response({"error": "FastAPI ML Engine is offline"}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        except Exception as e:
+            import traceback
+            error_trace = traceback.format_exc()
+            return Response({
+                "error": "Internal Django Server Error", 
+                "details": str(e),
+                "traceback": error_trace
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
