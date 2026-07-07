@@ -1,7 +1,7 @@
 import os
 import glob
 import json
-from detector import ShopliftingDetector
+from ml_service.detector import ShopliftingDetector
 
 # Default paths
 DATASET_TEST_DIR = r"C:\chrome downloads\shoplifting.v1i.yolov8\test\images"

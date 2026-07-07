@@ -1,4 +1,4 @@
-const API_BASE = 'http://localhost:8889/api';
+const API_BASE = `${window.CONFIG.API_URL}/api`;
 
 // DOM Elements
 const btnWebcam = document.getElementById('btn-webcam');
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // WebSocket Connection
 function connectWebSocket() {
-    const wsUrl = `ws://localhost:8889/ws/alerts/`;
+    const wsUrl = `${window.CONFIG.WS_URL}/ws/alerts/`;
     const socket = new WebSocket(wsUrl);
     
     socket.onopen = () => console.log('Connected to Security Alert System (WebSockets).');

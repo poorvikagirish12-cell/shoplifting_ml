@@ -1,3 +1,13 @@
 ultralytics>=8.0.0
 opencv-python-headless>=4.0.0
 pillow>=9.0.0
+django>=5.2
+djangorestframework
+django-cors-headers
+channels
+daphne
+gunicorn
+psycopg2-binary
+dj-database-url
+whitenoise
+python-dotenv

@@ -1,5 +1,6 @@
 from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 import shutil
 import os
 
@@ -9,9 +10,17 @@ from detector import ShopliftingDetector
 
 app = FastAPI(title="Shoplifting ML Engine", version="1.0")
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 # Initialize the detector once at startup to keep inference fast
-# Point to best.pt which is in the same directory now
-detector = ShopliftingDetector("best.pt")
+MODEL_PATH = os.getenv("MODEL_PATH", "best.pt")
+detector = ShopliftingDetector(MODEL_PATH)
 
 UPLOAD_DIR = "temp_frames"
 os.makedirs(UPLOAD_DIR, exist_ok=True)

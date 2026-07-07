@@ -1,3 +1,4 @@
+import os
 import requests
 from rest_framework import generics, status
 from rest_framework.response import Response
@@ -23,7 +24,8 @@ class ProcessFrameView(APIView):
             return Response({"error": "No frame provided"}, status=status.HTTP_400_BAD_REQUEST)
             
         # The URL where our FastAPI ML engine is running
-        fastapi_url = "http://127.0.0.1:8888/analyze"
+        base_fastapi_url = os.getenv("FASTAPI_URL", "http://127.0.0.1:8888").rstrip('/')
+        fastapi_url = f"{base_fastapi_url}/analyze"
         
         try:
             # Forward the exact image bytes to the ML engine
