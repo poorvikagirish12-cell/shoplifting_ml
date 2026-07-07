@@ -20,6 +20,8 @@
     </script>
     <!-- Icons -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <!-- SweetAlert2 for Popups -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body class="bg-darkbg text-slate-200 h-screen flex font-sans overflow-hidden">
     
@@ -34,19 +36,19 @@
         </div>
         
         <!-- Menu -->
-        <nav class="flex-1 px-4 py-6 space-y-2">
+        <nav class="flex-1 px-4 py-6 space-y-2" id="sidebar-nav">
             <p class="px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 mt-2">Main Menu</p>
-            <a href="#" class="flex items-center gap-3 px-4 py-3 bg-blue-600/10 text-blue-500 rounded-lg font-medium border border-blue-500/20 shadow-inner">
+            <a href="#" data-target="view-dashboard" class="nav-link active flex items-center gap-3 px-4 py-3 bg-blue-600/10 text-blue-500 rounded-lg font-medium border border-blue-500/20 shadow-inner">
                 <i class="ri-dashboard-fill text-xl"></i> Dashboard
             </a>
-            <a href="#" class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded-lg font-medium transition-colors">
+            <a href="#" data-target="view-cameras" class="nav-link flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded-lg font-medium transition-colors">
                 <i class="ri-layout-grid-fill text-xl"></i> Camera Grid
             </a>
-            <a href="#" class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded-lg font-medium transition-colors">
+            <a href="#" data-target="view-analytics" class="nav-link flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded-lg font-medium transition-colors">
                 <i class="ri-bar-chart-box-fill text-xl"></i> Analytics
             </a>
             <p class="px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 mt-6">System</p>
-            <a href="#" class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded-lg font-medium transition-colors">
+            <a href="#" data-target="view-settings" class="nav-link flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded-lg font-medium transition-colors">
                 <i class="ri-settings-4-fill text-xl"></i> Settings
             </a>
         </nav>
@@ -85,8 +87,10 @@
         </header>
 
         <!-- Main Body -->
-        <main class="flex-1 flex overflow-hidden p-6 gap-6">
+        <main class="flex-1 flex overflow-hidden p-6 gap-6 relative">
             
+            <!-- VIEW: DASHBOARD -->
+            <div id="view-dashboard" class="app-view flex-1 flex gap-6 min-w-0 h-full w-full">
             <!-- Center Column: KPIs + Video -->
             <section class="flex-1 flex flex-col gap-6 min-w-0">
                 
@@ -177,6 +181,32 @@
                     </div>
                 </div>
             </section>
+            </div> <!-- End Dashboard View -->
+
+            <!-- VIEW: CAMERA GRID -->
+            <div id="view-cameras" class="app-view hidden flex-1 flex-col items-center justify-center min-w-0 h-full w-full bg-panelbg border border-slate-700 rounded-xl shadow-lg">
+                <i class="ri-layout-grid-fill text-6xl text-slate-600 mb-4"></i>
+                <h2 class="text-2xl font-bold text-slate-300">Camera Grid</h2>
+                <p class="text-slate-500 mt-2">Connect multiple RTSP streams to monitor all aisles simultaneously.</p>
+                <p class="text-slate-600 text-sm mt-1">(Available in Enterprise Version)</p>
+            </div>
+
+            <!-- VIEW: ANALYTICS -->
+            <div id="view-analytics" class="app-view hidden flex-1 flex-col items-center justify-center min-w-0 h-full w-full bg-panelbg border border-slate-700 rounded-xl shadow-lg">
+                <i class="ri-bar-chart-box-fill text-6xl text-slate-600 mb-4"></i>
+                <h2 class="text-2xl font-bold text-slate-300">Analytics Dashboard</h2>
+                <p class="text-slate-500 mt-2">View historical theft trends, heatmaps, and staff response times.</p>
+                <p class="text-slate-600 text-sm mt-1">(Available in Enterprise Version)</p>
+            </div>
+
+            <!-- VIEW: SETTINGS -->
+            <div id="view-settings" class="app-view hidden flex-1 flex-col items-center justify-center min-w-0 h-full w-full bg-panelbg border border-slate-700 rounded-xl shadow-lg">
+                <i class="ri-settings-4-fill text-6xl text-slate-600 mb-4"></i>
+                <h2 class="text-2xl font-bold text-slate-300">System Configuration</h2>
+                <p class="text-slate-500 mt-2">Configure ML model thresholds, alert webhooks, and database retention.</p>
+                <p class="text-slate-600 text-sm mt-1">(Requires Admin Privilege)</p>
+            </div>
+
         </main>
     </div>
 

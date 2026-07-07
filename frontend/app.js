@@ -155,15 +155,41 @@ async function processFrame(imageFile) {
         
         if (response.ok) {
             // Update the display with the annotated image from the ML service
-            // Note: in a real production app, the backend would serve this image via a URL,
-            // but for this prototype, we'll just leave the previous frame visible if clean
-            
             if (result.status === 'incident_recorded') {
                 triggerRedAlert();
                 fetchIncidents(); // Refresh the list
+                
+                // Show SweetAlert popup for detection
+                Swal.fire({
+                    title: 'Shoplifting Detected!',
+                    text: 'Suspicious activity logged to the incident history.',
+                    icon: 'warning',
+                    confirmButtonColor: '#ef4444',
+                    background: '#1e293b',
+                    color: '#f8fafc'
+                });
+                
+            } else if (result.status === 'clean') {
+                // Show a brief success message for clean scans
+                Swal.fire({
+                    title: 'Scan Complete',
+                    text: 'No suspicious activity detected.',
+                    icon: 'success',
+                    timer: 2000,
+                    showConfirmButton: false,
+                    background: '#1e293b',
+                    color: '#f8fafc'
+                });
             }
         } else {
             console.error('Server error:', result.error);
+            Swal.fire({
+                title: 'Backend Error',
+                text: result.error || 'The server returned an error.',
+                icon: 'error',
+                background: '#1e293b',
+                color: '#f8fafc'
+            });
         }
         
     } catch (err) {
@@ -227,4 +253,36 @@ function stopWebcam() {
 btnWebcam.addEventListener('click', () => {
     if (stream) stopWebcam();
     else startWebcam();
+});
+
+// Navigation Logic
+const navLinks = document.querySelectorAll('.nav-link');
+const appViews = document.querySelectorAll('.app-view');
+
+navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = link.getAttribute('data-target');
+        
+        // Update active class on links
+        navLinks.forEach(l => {
+            l.classList.remove('bg-blue-600/10', 'text-blue-500', 'active');
+            l.classList.add('text-slate-400');
+            l.classList.remove('border-blue-500/20', 'shadow-inner');
+        });
+        
+        link.classList.add('bg-blue-600/10', 'text-blue-500', 'active', 'border-blue-500/20', 'shadow-inner');
+        link.classList.remove('text-slate-400');
+        
+        // Show target view, hide others
+        appViews.forEach(view => {
+            if (view.id === targetId) {
+                view.classList.remove('hidden');
+                view.classList.add('flex');
+            } else {
+                view.classList.add('hidden');
+                view.classList.remove('flex');
+            }
+        });
+    });
 });
