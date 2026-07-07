@@ -1,4 +1,4 @@
 window.CONFIG = {
-    API_URL: "http://localhost:8889",
-    WS_URL: "ws://localhost:8889"
+    API_URL: https://shoplifting-bacomckend.onrender.
+    WS_URL: wss://shoplifting-backend.onrender.com
 };
